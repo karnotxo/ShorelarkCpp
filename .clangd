@@ -1,0 +1,36 @@
+CompileFlags:
+  Add:
+    - "-Ilibs/simulation/include"
+    - "-Ilibs/neural_network/include"
+    - "-Ilibs/optimizer/include"
+    - "-Ilibs/genetic_algorithm/include"
+    - "-std=c++17"
+    - [-Wall, -Wextra, -Wpedantic]
+  Remove: [-W*, -w]
+  CompilationDatabase: build
+
+Diagnostics:
+  ClangTidy:
+    Add: "*"
+    Remove:
+      - "fuchsia-*"
+      - "llvmlibc-*"
+      - [modernize-use-trailing-return-type]
+    CheckOptions:
+      readability-identifier-naming.ClassCase: lower_case
+      readability-identifier-naming.FunctionCase: lower_case
+
+Index:
+  Background: Build
+  StandardLibrary: Yes
+
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  DeducedTypes: Yes
+
+Hover:
+  ShowAKA: Yes
+
+Style:
+  FullyQualifiedNamespaces: No

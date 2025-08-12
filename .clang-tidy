@@ -1,0 +1,57 @@
+---
+Checks: >
+  *,
+  -fuchsia-*,
+  -llvmlibc-*,
+  -llvm-header-guard,
+  readability-identifier-naming
+
+CheckOptions:
+  # Types and Classes (snake_case like basic_string, vector)
+  - key: readability-identifier-naming.ClassCase
+    value: lower_case
+  - key: readability-identifier-naming.StructCase
+    value: lower_case
+  - key: readability-identifier-naming.TypedefCase
+    value: lower_case
+  - key: readability-identifier-naming.TypeAliasCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumCase
+    value: lower_case
+
+  # Functions and Methods (snake_case like push_back)
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.MethodCase
+    value: lower_case
+
+  # Variables and Parameters (snake_case)
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.ParameterCase
+    value: lower_case
+  - key: readability-identifier-naming.MemberCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberSuffix
+    value: _
+
+  # Constants (snake_case like npos)
+  - key: readability-identifier-naming.ConstantCase
+    value: lower_case
+  - key: readability-identifier-naming.ConstantMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.EnumConstantCase
+    value: lower_case
+
+  # Namespaces (snake_case like std::chrono)
+  - key: readability-identifier-naming.NamespaceCase
+    value: lower_case
+
+  # Template Parameters (CamelCase like Allocator or single uppercase like T)
+  - key: readability-identifier-naming.TemplateParameterCase
+    value: CamelCase
+
+  # Macros (SCREAMING_SNAKE_CASE)
+  - key: readability-identifier-naming.MacroDefinitionCase
+    value: UPPER_CASE
+
