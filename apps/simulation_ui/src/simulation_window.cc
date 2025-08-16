@@ -258,6 +258,7 @@ void simulation_window::render_world() {
     const auto bird_size = world_config.bird_size * scale;
     const float bird_radius = std::max(bird_size, bird_min_radius);
     const float fov_degrees = config_.get_simulation().brain_eye.fov_angle_deg;
+    const float fov_radians = fov_degrees * (simulation::constants::k_pi / 180.0f);
     // Draw birds with increased size
     spdlog::trace("Drawing {} birds", gui_data_.birds.size());
     for (const auto &bird : gui_data_.birds) {
@@ -268,10 +269,10 @@ void simulation_window::render_world() {
         draw_list->AddCircleFilled(ImVec2(position_x, position_y), bird_radius,
                                    IM_COL32(255, 255, 255, 255));
 
-        const float display_rotation =
-            bird.rotation + simulation::constants::k_pi;  // ADD 180 degrees
+        // Use bird.rotation directly for correct direction
+        const float display_rotation = bird.rotation;
 
-        // Draw direction indicator - apply PI offset in the opposite direction
+        // Draw direction indicator
         const float direction_length = bird_radius * 2.5f;  // Made longer
         const ImVec2 direction = rotate_vector(ImVec2(direction_length, 0), display_rotation);
         draw_list->AddLine(ImVec2(position_x, position_y),
@@ -280,8 +281,8 @@ void simulation_window::render_world() {
 
         // Draw vision cone if enabled with increased visibility
         if (ui_config.show_vision_cones) {
-            const float start_angle = display_rotation - fov_degrees * 0.5F;
-            const float end_angle = display_rotation + fov_degrees * 0.5F;
+            const float start_angle = display_rotation - fov_radians * 0.5F;
+            const float end_angle = display_rotation + fov_radians * 0.5F;
             const float vision_radius = radius * 6.0F;  // Made larger
             draw_list->PathArcTo(ImVec2(position_x, position_y), vision_radius, start_angle,
                                  end_angle, 32);
@@ -460,7 +461,7 @@ void simulation_window::render_controls() {
 void simulation_window::render_statistics() {
     ImGui::Text("Generation: %zu", simulation_->get_generation());
     ImGui::Text("Time: %.1f s", elapsed_time_);
-    ImGui::Text("Best Fitness: %.2f", best_fitness_);
+    ImGui::Text("Best Fitness: %zu", best_fitness_);
     ImGui::Text("Average Fitness: %.2f", avg_fitness_);
 }
 
@@ -842,6 +843,8 @@ void simulation_window::update_data() {
     // Copy animals to GUI birds
     const auto &animals = simulation_->get_world().get_animals();
     gui_data_.birds.reserve(animals.size());
+    size_t fitness_sum = 0;
+    best_fitness_ = 0;
     for (const auto &animal : animals) {
         gui_bird bird;
         bird.pos_x = animal.position().x();
@@ -850,6 +853,9 @@ void simulation_window::update_data() {
         bird.speed = animal.speed();
         bird.fitness = animal.food_eaten();
         gui_data_.birds.push_back(bird);
+        size_t fitness = bird.fitness;
+        if (fitness > best_fitness_) best_fitness_ = fitness;
+        fitness_sum += fitness;
     }
 
     // Copy foods to GUI foods
@@ -862,10 +868,8 @@ void simulation_window::update_data() {
         gui_data_.foods.push_back(f);
     }
 
-    // Copy statistics
-    gui_data_.generation = simulation_->get_generation();
-    gui_data_.best_fitness = best_fitness_;
-    gui_data_.avg_fitness = avg_fitness_;
+    // Update statistics
+    avg_fitness_ = animals.empty() ? 0.0f : static_cast<float>(fitness_sum) / animals.size();
 }
 
 // Start the simulation thread

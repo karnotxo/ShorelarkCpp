@@ -39,9 +39,6 @@ struct gui_food {
 struct gui_world_data {
     std::vector<gui_bird> birds;
     std::vector<gui_food> foods;
-    size_t generation;
-    float best_fitness;
-    float avg_fitness;
 };
 
 /**
