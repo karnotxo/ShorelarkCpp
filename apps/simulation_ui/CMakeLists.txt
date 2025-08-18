@@ -22,7 +22,7 @@ add_executable(cshorelark::simulation_ui ALIAS simulation_ui)
 
 target_include_directories(simulation_ui
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}
         ${PROJECT_SOURCE_DIR}/bindings
 )
 
@@ -92,13 +92,13 @@ install(TARGETS simulation_ui
 # Add tests if enabled
 if(BUILD_TESTING)
     find_package(Catch2 REQUIRED)
-    
+
     add_executable(simulation_ui_test
         test/simulation_config_test.cc
         src/simulation_config.cc
         src/simulation_config.h
     )
-    
+
     target_link_libraries(simulation_ui_test
         PRIVATE
             cshorelark::random
@@ -114,9 +114,9 @@ if(BUILD_TESTING)
             tl::expected
             tomlplusplus::tomlplusplus
     )
-    
+
     target_compile_features(simulation_ui_test PRIVATE cxx_std_17)
-    
+
     # Enable sanitizers in Debug mode for tests
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
@@ -131,7 +131,7 @@ if(BUILD_TESTING)
             )
         endif()
     endif()
-    
+
     include(CTest)
     include(Catch)
     catch_discover_tests(simulation_ui_test)

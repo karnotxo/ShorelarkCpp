@@ -36,6 +36,9 @@ if(ENABLE_CLANG_TIDY)
         set(CMAKE_CXX_CLANG_TIDY
             ${CLANG_TIDY_EXE};
             -extra-arg=-Wno-unknown-warning-option;
+			-extra-arg=$<IF:$<CXX_COMPILER_ID:MSVC>,/EHsc,-fcxx-exceptions>;
+			-extra-arg=$<IF:$<CXX_COMPILER_ID:MSVC>,/std:c++17,-std=c++17>;
+			-extra-arg=$<$<CXX_COMPILER_ID:MSVC>:/permissive->;
             -p=${CMAKE_BINARY_DIR})
         message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
     else()
@@ -121,12 +124,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_CLANG_TIDY clang-tidy;
-        --header-filter=.*;
-        --config-file=${CMAKE_CURRENT_LIST_DIR}/.clang-tidy;
-        --extra-arg=$<IF:$<CXX_COMPILER_ID:MSVC>,/EHsc,-fcxx-exceptions>;
-        --extra-arg=$<IF:$<CXX_COMPILER_ID:MSVC>,/std:c++17,-std=c++17>;
-        --extra-arg=$<$<CXX_COMPILER_ID:MSVC>:/permissive->; )
 set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "Filename postfix for libraries under DEBUG configuration")
 
 set(CXX_STANDARD "${CMAKE_CXX_STANDARD}")
@@ -155,6 +152,8 @@ if(MSVC)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
+
+add_definitions(-D_USE_MATH_DEFINES)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
@@ -199,6 +198,8 @@ endif()
 message(STATUS "Building with CMake ${CMAKE_VERSION} and C++ standard ${CMAKE_CXX_STANDARD}")
 message(STATUS "Output path: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+# add_subdirectory(include)
 
 # Add libraries first
 add_subdirectory(libs)

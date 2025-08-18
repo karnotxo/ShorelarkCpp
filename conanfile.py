@@ -16,12 +16,15 @@ if sys.version_info[0] < 3:
 
 def get_version():
     try:
-        content = load("CMakeLists.txt")
-        version = re.search(b"set\(SERVER_CPP_VERSION (.*)\)", content).group(1)
-        return version.strip()
-    except Exception as e:
-        return None
-    
+        with open("CMakeLists.txt", "r") as f:
+            content = f.read()
+        version = re.search(r"set\(SHORELARK_CPP_VERSION ([^)]*)\\)", content)
+        if version:
+            return version.group(1).strip()
+    except Exception:
+        pass
+    return "0.0.0"
+
 class ConanFileServerCpp(ConanFile):
     name = 'server_cpp'
     version = get_version()
@@ -29,8 +32,8 @@ class ConanFileServerCpp(ConanFile):
     generators = "CMakeToolchain", "CMakeDeps", "MesonToolchain", "PkgConfigDeps"
     exports_sources = '*', '!bin/*', '!build/*', '!cmake-build-*', '!.idea/*', '!.vscode/*', '!.ci/*', '!.devcontainer/*'
     settings = "os", "compiler", "build_type", "arch"
-    options = { 
-        "builder": ["meson", "cmake", "qmake"],
+    options = {
+        "builder": ["meson", "cmake"],
         "build_docs": [True, False]
     }
     default_options = {
@@ -119,13 +122,13 @@ class ConanFileServerCpp(ConanFile):
         copy(self, "*opengl3*", os.path.join(self.dependencies["imgui"].package_folder,
             "res", "bindings"), os.path.join(self.source_folder, "bindings"))
     # end of method generate
-    
+
     def layout(self):
-        if self.options.builder == "cmake":   
+        if self.options.builder == "cmake":
             cmake_layout(self)
     # end of method layout
-			
-    def package(self):	
+
+    def package(self):
         if self.options.get_safe("builder") == "meson":
             meson = Meson(self)
             meson.install()
@@ -139,7 +142,7 @@ class ConanFileServerCpp(ConanFile):
             self.options.rm_safe("fPIC")
     # end of method config_options
 
-    def configure(self):	        
+    def configure(self):
         self.options["fmt"].header_only = False
         self.options["spdlog"].header_only = False
         self.options["spdlog"].wchar_support = False
