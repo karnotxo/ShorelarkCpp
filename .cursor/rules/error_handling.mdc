@@ -1,0 +1,78 @@
+---
+description: "Modern C++ error handling patterns focusing on std::optional and std::expected instead of traditional null pointers and exceptions"
+globs: ["**/*.cc", "**/*.h"]
+alwaysApply: false
+---
+# Modern C++ Error Handling Patterns
+
+## Core Principles
+- Favor compile-time error detection over runtime error detection
+- Make impossible states unrepresentable through the type system
+- Use the most appropriate error handling technique for each scenario
+- Be explicit about error conditions in APIs
+
+## Prefer std::optional<T> (C++17)
+- Use for functions that may or may not return a value
+- Prefer over nullptr, special values (-1, empty string), or boolean return flags
+- Perfect for search operations, getters where value might not exist, or parsers
+- Example: `std::optional<User> find_user(const std::string& username);`
+- Combine with using `value_or()` and `has_value()` at call sites
+- Consider `.transform()` and `.and_then()` (C++23) for chaining operations
+
+## Prefer std::expected<T, E> (C++23) or tl::expected<T, E>
+- Use for operations that can fail with a specific error type
+- Prefer over exceptions for non-exceptional failures
+- Ideal for file operations, network requests, and validations
+- Define meaningful error types using enum class
+- Example: `expected<Data, ErrorCode> parse_data(const std::string& input);`
+- Encourage chaining with `.and_then()` and `.transform()` at call sites
+- Handle errors explicitly with `.error()` and `.value()`
+
+## Reserve Exceptions For
+- Constructor failures when object invariants cannot be established
+- Truly exceptional conditions that cannot be reasonably handled locally
+- Violations of API contracts (preconditions/invariants)
+- Resource exhaustion cases
+- Always derive custom exceptions from std::exception
+- Include relevant context in exception messages
+
+## Pattern Examples
+```cpp
+// GOOD: Using optional for values that might not exist
+std::optional<Record> find_record(const std::string& id) {
+    auto it = records_.find(id);
+    if (it != records_.end()) {
+        return it->second;
+    }
+    return std::nullopt;
+}
+
+// GOOD: Using expected for operations that might fail
+tl::expected<Data, ParseError> parse_config(const std::string& content) {
+    try {
+        return Data{parse_internal(content)};
+    } catch (const ParseException& ex) {
+        return tl::unexpected(ParseError{ex.error_code(), ex.what()});
+    }
+}
+
+// BAD: Using nullptr and manual checks
+Record* find_record_old(const std::string& id) { // Avoid this pattern
+    auto it = records_.find(id);
+    if (it != records_.end()) {
+        return &it->second;
+    }
+    return nullptr; // Avoid returning nullptr
+}
+
+// BAD: Using exceptions for expected failures
+Data parse_config_old(const std::string& content) { // Avoid this pattern
+    return Data{parse_internal(content)}; // Might throw for expected parse failures
+}
+```
+
+## Migration Guidelines
+- When refactoring, prioritize public API boundaries first
+- Change function signatures to return optional/expected instead of throwing or returning null
+- Update calling code to handle the new return types appropriately
+- Document the error handling approach for your library or component 

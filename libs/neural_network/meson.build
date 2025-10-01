@@ -3,7 +3,8 @@ neural_network_inc = include_directories('include')
 neural_network_lib = library('neural_network',
     [
         'src/network.cc',
-        'src/layer.cc'
+        'src/layer.cc',
+        'src/neuron.cc'
     ],
     include_directories : neural_network_inc,
     dependencies : [
@@ -34,7 +35,9 @@ if get_option('build_tests')
         [
             'test/neuron_test.cc',
             'test/layer_test.cc',
-            'test/network_test.cc'
+            'test/network_test.cc',
+            'test/activation_test.cc',
+            'test/random_test.cc'
         ],
         dependencies : [
             neural_network_dep,

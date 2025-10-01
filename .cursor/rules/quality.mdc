@@ -1,0 +1,101 @@
+---
+description: "Quality assurance rules for testing, code coverage, and static analysis"
+globs: ["**/*.cc", "**/*.h", "**/*_test.cc"]
+alwaysApply: false
+---
+# Quality Assurance Rules
+
+## Testing Strategy
+testing:
+  framework: catch2
+  style: bdd
+  categories:
+    unit:
+      coverage: 90%
+      location: "*_test.cc"
+    integration:
+      coverage: 80%
+      location: "*_integration_test.cc"
+    performance:
+      location: "*_bench.cc"
+      metrics:
+        - throughput
+        - latency
+        - memory_usage
+
+## Documentation
+documentation:
+  style: doxygen
+  coverage:
+    public_api: required
+    internal: recommended
+  elements:
+    - brief
+    - detailed
+    - parameters
+    - return values
+    - exceptions
+    - examples
+    - see_also
+  locations:
+    - headers
+    - implementation (complex algorithms)
+    - test cases
+
+## Code Review
+code_review:
+  checklist:
+    - correctness
+    - performance
+    - security
+    - maintainability
+    - test coverage
+  automated_checks:
+    - linting
+    - formatting
+    - static analysis
+    - test results
+  practices:
+    - pair programming
+    - design reviews
+    - code walkthroughs
+
+## Static Analysis
+static_analysis:
+  tools:
+    clang_tidy:
+      enabled: true
+      checks: modernize-*,performance-*,readability-*
+    clangd:
+      enabled: true
+      features:
+        - completion
+        - diagnostics
+        - formatting
+    sanitizers:
+      - address
+      - undefined
+      - thread
+  custom_checks:
+    - no_raw_pointers
+    - no_magic_numbers
+    - proper_error_handling
+
+## Continuous Integration
+ci:
+  stages:
+    - build
+    - test
+    - static_analysis
+    - documentation
+    - deployment
+  requirements:
+    - all_tests_pass
+    - coverage_thresholds_met
+    - no_linting_errors
+    - documentation_up_to_date
+  artifacts:
+    - test_results
+    - coverage_reports
+    - documentation
+    - binaries 

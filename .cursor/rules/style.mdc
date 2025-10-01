@@ -1,0 +1,76 @@
+---
+description: "Code style guidelines for C++ development including include order, memory management, and SOLID principles"
+globs: ["**/*.cc", "**/*.h"]
+alwaysApply: false
+---
+# Code Style Guidelines
+
+## Include Order
+include_order:
+  - related_header
+  - c_system
+  - cpp_system
+  - other_libraries
+  - project_headers
+
+## Include Style
+include_style:
+  internal: quoted
+  external: angle_brackets
+
+## Modern C++ Features
+modern_features:
+  - smart_pointers
+  - move_semantics
+  - string_view
+  - span
+  - optional
+  - expected
+  - ranges
+  - views
+
+## Memory Management
+memory:
+  - raii_principles
+  - no_raw_pointers
+  - no_manual_memory_management
+
+## Type Safety
+type_safety:
+  - static_cast_for_conversions
+  - bounded_arrays
+  - input_validation
+  - no_c_style_casts
+
+## Error Handling
+error_handling:
+  - expected_for_errors
+  - exceptions_for_exceptional_cases
+  - validate_invariants
+  - prefer_optional_to_nullptrs
+  - prefer_expected_to_exceptions
+
+## Error Handling Patterns
+error_patterns:
+  - use_optional: "Use std::optional<T> for values that may or may not exist instead of nullable pointers or sentinel values"
+  - use_expected: "Use tl::expected<T, E> or std::expected<T, E> (C++23) for operations that can fail with a specific error, rather than exceptions"
+  - null_object_pattern: "Consider null object pattern when appropriate instead of null checks"
+  - error_codes: "Use enum class for error codes when using expected for error handling"
+  - exception_guidelines: "Reserve exceptions for truly exceptional conditions that cannot be handled locally"
+  - avoid_sentinel: "Avoid using sentinel values (-1, nullptr, etc.) to indicate errors or absence"
+  - document_contracts: "Clearly document function contracts regarding error handling using comments"
+
+## Code Organization
+organization:
+  - one_class_per_file
+  - implementation_in_source
+  - declaration_in_header
+  - separate_test_files
+
+## SOLID Principles
+solid:
+  - single_responsibility
+  - open_closed
+  - liskov_substitution
+  - interface_segregation
+  - dependency_inversion 

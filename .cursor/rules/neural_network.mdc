@@ -1,0 +1,150 @@
+---
+description: "Rules for neural network implementation including architecture, activation functions, and training algorithms"
+globs: ["**/neural_*.cc", "**/neural_*.h", "**/network*.cc", "**/network*.h"]
+alwaysApply: false
+---
+# Neural Network Implementation Rules
+
+## Architecture
+architecture:
+  type: feed_forward
+  layer_types:
+    - input
+    - hidden
+    - output
+  topology:
+    representation: vector<usize>
+    validation:
+      - non_empty_layers
+      - minimum_layer_size
+      - maximum_layer_size
+  connections:
+    type: fully_connected
+    weight_storage: contiguous_matrix
+
+## Neuron
+neuron:
+  activation:
+    function: tanh
+    alternatives:
+      - sigmoid
+      - relu
+      - leaky_relu
+  bias:
+    enabled: true
+    initialization:
+      method: random
+      range: [-1.0, 1.0]
+  input:
+    aggregation: weighted_sum
+    normalization: true
+
+## Weights
+weights:
+  storage:
+    type: flat_array
+    layout: row_major
+    alignment: 32_byte
+  initialization:
+    method: xavier
+    distribution: uniform
+    range: [-1.0, 1.0]
+  access:
+    pattern: sequential
+    cache_friendly: true
+
+## Forward Pass
+forward_pass:
+  implementation:
+    type: vectorized
+    simd_enabled: true
+    batch_processing: true
+  optimizations:
+    - fused_multiply_add
+    - loop_unrolling
+    - cache_locality
+    - branch_elimination
+  validation:
+    - input_bounds
+    - nan_checks
+    - infinity_checks
+
+## Memory Management
+memory:
+  allocation:
+    strategy: arena
+    alignment: cache_line
+  layout:
+    weights: contiguous
+    activations: contiguous
+    gradients: contiguous
+  optimization:
+    - minimize_allocations
+    - reuse_buffers
+    - aligned_access
+    - cache_friendly_traversal
+
+## Performance
+performance:
+  computation:
+    - simd_operations
+    - parallel_layer_processing
+    - matrix_multiplication_optimization
+  memory_access:
+    - sequential_patterns
+    - predictable_branches
+    - minimal_cache_misses
+  data_structures:
+    matrix:
+      storage: std::vector<float>
+      layout: row_major
+      alignment: 32_byte
+    layer:
+      weights: contiguous_array
+      biases: aligned_vector
+
+## Serialization
+serialization:
+  format:
+    weights: binary
+    topology: json
+  operations:
+    - save_network
+    - load_network
+    - export_weights
+    - import_weights
+  validation:
+    - checksum
+    - version_compatibility
+    - topology_match
+
+## Testing
+testing:
+  unit_tests:
+    - forward_propagation
+    - weight_initialization
+    - activation_functions
+    - memory_layout
+  performance_tests:
+    - throughput
+    - memory_usage
+    - cache_performance
+  validation_tests:
+    - numerical_stability
+    - gradient_checking
+    - topology_constraints
+
+## Integration
+integration:
+  genetic_algorithm:
+    - weight_mutation
+    - crossover_compatibility
+    - fitness_evaluation
+  visualization:
+    - network_structure
+    - weight_distribution
+    - activation_patterns
+  debugging:
+    - weight_inspection
+    - activation_monitoring
+    - performance_profiling 

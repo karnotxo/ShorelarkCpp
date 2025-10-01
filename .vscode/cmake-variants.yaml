@@ -1,0 +1,60 @@
+buildType:
+  default: debug
+  choices:
+    debug:
+      short: Debug
+      long: Emit debug information
+      buildType: Debug
+    release:
+      short: Release
+      long: Optimize generated code
+      buildType: Release
+
+coverage:
+  default: no_coverage
+  choices:
+    # enable coverage by additional compiler flags
+    coverage:
+      short: cov
+      long: build with coverage instrumentation
+      settings:
+        CMAKE_CXX_FLAGS: "-fprofile-arcs -ftest-coverage "
+        CMAKE_C_FLAGS: "-fprofile-arcs -ftest-coverage"
+        CMAKE_EXE_LINKER_FLAGS: "--coverage"
+    no_coverage:
+      short: no_coverage
+      long: build without coverage
+
+sanitizer:
+  default: NoSan # no sanitizer
+  choices:
+    NoSan:
+      short: NoSan
+      long: build without address sanitizer instrumentation
+    ASan:
+      short: ASan
+      long: build with address sanitizer instrumentation
+      settings:
+        CMAKE_CXX_FLAGS: "-fsanitize=address -fno-omit-frame-pointer"
+        CMAKE_C_FLAGS: "-fsanitize=address -fno-omit-frame-pointer"
+        CMAKE_EXE_LINKER_FLAGS: "-fsanitize=address"
+    MSan:
+      short: MSan
+      long: build with memory sanitizer instrumentation
+      settings:
+        CMAKE_CXX_FLAGS: "-fsanitize=memory"
+        CMAKE_C_FLAGS: "-fsanitize=memory"
+    UBSan:
+      short: UBSan
+      long: build with undefined behavior sanitizer instrumentation
+      settings:
+        CMAKE_CXX_FLAGS: "-fsanitize=undefined"
+        CMAKE_C_FLAGS: "-fsanitize=undefined"
+        CMAKE_EXE_LINKER_FLAGS: "-fsanitize=undefined"
+    TSan:
+      short: TSan
+      long: build with thread sanitizer instrumentation
+      settings:
+        CMAKE_CXX_FLAGS: "-fsanitize=thread"
+        CMAKE_C_FLAGS: "-fsanitize=thread"
+  

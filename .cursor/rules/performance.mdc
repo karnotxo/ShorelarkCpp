@@ -1,0 +1,89 @@
+---
+description: "Performance optimization rules for efficient algorithms, memory usage, and computational complexity"
+globs: ["**/*.cc", "**/*.h", "**/benchmarks/*.cc"]
+alwaysApply: false
+---
+# Performance Rules
+
+## Optimization Levels
+optimization:
+  general:
+    - avoid_virtual_calls_hot_path
+    - minimize_allocations
+    - use_stack_when_possible
+    - prefer_references_to_copies
+  memory:
+    - cache_friendly_data_structures
+    - aligned_data_structures
+    - minimize_false_sharing
+    - pool_allocators_for_fixed_size
+  algorithms:
+    - o_complexity_awareness
+    - prefer_linear_algorithms
+    - batch_processing
+    - lazy_evaluation
+
+## SIMD Operations
+simd:
+  enabled: true
+  implementations:
+    - auto_vectorization
+    - explicit_intrinsics
+    - parallel_algorithms
+  data_alignment:
+    - 16_byte
+    - 32_byte
+    - cache_line
+
+## Concurrency
+concurrency:
+  patterns:
+    - task_based_parallelism
+    - data_parallelism
+    - pipeline_parallelism
+  primitives:
+    - std::async
+    - std::future
+    - std::atomic
+    - std::mutex
+  guidelines:
+    - minimize_lock_contention
+    - avoid_false_sharing
+    - use_lock_free_when_possible
+    - prefer_tasks_to_threads
+
+## Profiling
+profiling:
+  tools:
+    - perf
+    - vtune
+    - gperftools
+    - tracy
+  metrics:
+    - cpu_time
+    - memory_usage
+    - cache_misses
+    - branch_mispredictions
+  analysis:
+    - hotspot_identification
+    - bottleneck_detection
+    - memory_leak_detection
+    - lock_contention_analysis
+
+## Benchmarking
+benchmarking:
+  framework: catch2
+  metrics:
+    - throughput
+    - latency
+    - memory_consumption
+    - cache_performance
+  methodology:
+    - baseline_comparison
+    - statistical_significance
+    - multiple_iterations
+    - controlled_environment
+  reporting:
+    - performance_regression_tracking
+    - trend_analysis
+    - optimization_impact 

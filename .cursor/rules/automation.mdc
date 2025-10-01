@@ -1,0 +1,84 @@
+---
+description: "Automation rules for CI/CD pipelines, scripts, and tooling"
+globs: ["**/.github/workflows/*.yml", "**/.gitlab-ci.yml", "**/scripts/*.sh", "**/scripts/*.bat"]
+alwaysApply: false
+---
+# Automation Rules
+
+## Cursor AI Behavior
+cursor:
+  mode: autonomous_agent
+  context_window:
+    - requirements.md
+    - current_file
+    - related_headers
+    - test_files
+  response_style:
+    - concise
+    - actionable
+    - explanatory
+
+## Code Generation
+generation:
+  patterns:
+    - RAII wrappers
+    - factory methods
+    - builder patterns
+    - pimpl idiom
+  templates:
+    class:
+      - header guard
+      - namespace
+      - class declaration
+      - public interface
+      - private implementation
+    test:
+      - test suite
+      - test cases
+      - fixtures
+      - mocks
+  refactoring:
+    - extract method
+    - extract class
+    - move semantics
+    - smart pointer conversion
+
+## Auto-fixes
+auto_fix:
+  enabled: true
+  patterns:
+    - include guard standardization
+    - namespace alignment
+    - brace style
+    - parameter naming
+    - member initialization
+  safety:
+    preview_changes: true
+    backup_files: true
+    revert_on_error: true
+
+## Learning
+learning:
+  store_patterns:
+    location: .cursor/patterns
+    format: mdc
+  improvements:
+    - track_successful_changes
+    - learn_from_rejections
+    - adapt_to_codebase
+  feedback:
+    collect: true
+    apply: next_generation
+
+## Integration
+integration:
+  tools:
+    - clang-format
+    - clang-tidy
+    - cmake
+    - conan
+  actions:
+    - format_on_save
+    - lint_on_save
+    - run_tests_on_change
+    - update_docs_on_change 

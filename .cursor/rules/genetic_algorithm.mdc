@@ -1,0 +1,106 @@
+---
+description: "Rules for genetic algorithm implementation including selection, mutation, and crossover strategies"
+globs: ["**/genetic_*.cc", "**/genetic_*.h", "**/evolution*.cc", "**/evolution*.h"]
+alwaysApply: false
+---
+# Genetic Algorithm Implementation Rules
+
+## Neural Network
+neural_network:
+  architecture:
+    input_layer:
+      size: 4
+      normalization: true
+    hidden_layer:
+      size: 6
+      activation: tanh
+    output_layer:
+      size: 2
+      activation: tanh
+  weights:
+    initialization:
+      method: xavier
+      range: [-1.0, 1.0]
+    mutation:
+      rate: 0.01
+      distribution: gaussian
+      sigma: 0.1
+
+## Evolution Parameters
+evolution:
+  population:
+    size: 50
+    initialization: random
+  selection:
+    method: tournament
+    tournament_size: 3
+    elitism_count: 2
+  genetic_operators:
+    crossover:
+      rate: 0.7
+      method: uniform
+    mutation:
+      rate: 0.01
+      method: gaussian
+      range: [-0.5, 0.5]
+
+## Simulation
+simulation:
+  world:
+    size: [1000, 1000]
+    wrap_around: true
+    obstacles: false
+  physics:
+    time_step: 0.016  # ~60 FPS
+    max_velocity: 100.0
+    max_acceleration: 50.0
+  termination:
+    max_generations: 100
+    fitness_threshold: 0.95
+    stagnation_limit: 20
+
+## Performance Optimization
+performance:
+  parallelization:
+    evaluation: true
+    population_processing: true
+    batch_size: 10
+  simd:
+    neural_network: true
+    fitness_calculation: true
+  memory:
+    preallocated_population: true
+    contiguous_storage: true
+    arena_allocator: true
+
+## Data Collection
+metrics:
+  tracking:
+    best_fitness: true
+    average_fitness: true
+    population_diversity: true
+    generation_stats: true
+  visualization:
+    real_time: true
+    save_snapshots: true
+    plot_metrics: true
+  export:
+    format: csv
+    frequency: every_generation
+    data:
+      - fitness_stats
+      - network_weights
+      - population_state
+
+## Validation
+validation:
+  genome:
+    bounds_check: true
+    size_validation: true
+  network:
+    input_range: [-1.0, 1.0]
+    output_validation: true
+  population:
+    size_constraints: true
+    diversity_check: true
+    fitness_sanity: true 

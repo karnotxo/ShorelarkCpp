@@ -2,28 +2,48 @@ simulation_ui_sources = files(
     'src/main.cc',
     'src/app.cc',
     'src/simulation_window.cc',
-    'src/simulation_config.cc'
+    'src/simulation_config.cc',
+    'src/imgui_context.cc',
+    'src/ImFileDialog.cpp',
+    'src/imgui_stdlib.cpp'
 )
 
-simulation_ui_inc = include_directories('src')
+# ImGui bindings
+imgui_bindings_sources = files(
+    '../../bindings/imgui_impl_glfw.cpp',
+    '../../bindings/imgui_impl_opengl3.cpp'
+)
+
+simulation_ui_inc = include_directories('src', '../../bindings')
 
 # Additional dependencies needed for GUI
 glfw_dep = dependency('glfw3')
 glew_dep = dependency('glew')
 transwarp_dep = dependency('transwarp')
 tomlpp_dep = dependency('tomlplusplus')
+stb_dep = dependency('stb')
+args_dep = dependency('taywee-args')
 
 simulation_ui = executable('simulation_ui',
-    simulation_ui_sources,
+    [simulation_ui_sources, imgui_bindings_sources],
     include_directories : [simulation_ui_inc],
     dependencies : [
+        random_dep,
         simulation_dep,
+        neural_network_dep,
+        genetic_algorithm_dep,
+        stb_dep,
         imgui_dep,
         glfw_dep,
         glew_dep,
+        transwarp_dep,
+        args_dep,
         fmt_dep,
         spdlog_dep,
-        transwarp_dep,
+        date_dep,
+        ranges_v3_dep,
+        span_lite_dep,
+        tl_expected_dep,
         tomlpp_dep
     ],
     install : true

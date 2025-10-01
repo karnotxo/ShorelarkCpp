@@ -1,0 +1,34 @@
+---
+description: "Naming conventions for C++ code elements including types, functions, variables, and constants"
+globs: ["**/*.cc", "**/*.h"]
+alwaysApply: false
+---
+# Naming Conventions
+
+## Types
+class: snake_case
+struct: snake_case
+enum: snake_case
+typedef: snake_case
+type_alias: snake_case
+template_parameter: CamelCase
+
+## Functions and Variables
+function: snake_case
+method: snake_case
+variable: snake_case
+parameter: snake_case
+member: snake_case
+private_member: snake_case_
+
+## Constants
+constant: snake_case
+constant_member: snake_case
+enum_constant: snake_case
+macro: SCREAMING_SNAKE_CASE
+
+## Namespaces
+namespace: snake_case
+
+## Include Guards
+include_guard: SCREAMING_SNAKE_CASE 

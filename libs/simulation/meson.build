@@ -1,11 +1,13 @@
 simulation_sources = files(
-    'src/statistics.cpp',
-    'src/animal_individual.cpp',
-    'src/brain.cpp',
-    'src/animal.cpp',
-    'src/eye.cpp',
-    'src/food.cpp',
-    'src/world.cpp'
+    'src/statistics.cc',
+    'src/animal_individual.cc',
+    'src/brain.cc',
+    'src/animal.cc',
+    'src/eye.cc',
+    'src/food.cc',
+    'src/world.cc',
+    'src/simulation.cc',
+    'src/simulation_error.cc'
 )
 
 simulation_inc = include_directories('include')
@@ -32,9 +34,15 @@ simulation_dep = declare_dependency(
 
 if get_option('build_tests')
     simulation_test_sources = files(
-        'test/config_test.cpp',
-        'test/statistics_test.cpp',
-        'test/animal_individual_test.cpp'
+        'test/config_test.cc',
+        'test/statistics_test.cc',
+        'test/animal_individual_test.cc',
+        'test/animal_test.cc',
+        'test/brain_test.cc',
+        'test/eye_test.cc',
+        'test/food_test.cc',
+        'test/vector2d_test.cc',
+        'test/world_test.cc'
     )
 
     simulation_test = executable('simulation_test',

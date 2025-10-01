@@ -1,2 +1,2 @@
-subdir('simulation_ui')
-subdir('optimizer_cli') 
+subdir('optimizer_cli')
+subdir('simulation_ui') 

@@ -1,0 +1,60 @@
+---
+description: "Git workflow rules including branch naming, commit messages, and pull request guidelines"
+globs: ["**/.git*", "**/.gitignore", "**/.github/**"]
+alwaysApply: false
+---
+# Git and Version Control Rules
+
+## Commit Messages
+commit_format:
+  type:
+    - feat: New features
+    - fix: Bug fixes
+    - refactor: Code restructuring
+    - docs: Documentation changes
+    - test: Test additions/modifications
+    - style: Code style changes
+    - perf: Performance improvements
+    - chore: Build/maintenance tasks
+  scope: optional component name in parentheses
+  description: imperative mood, lowercase
+  body: optional detailed explanation
+  footer: optional breaking changes, references
+
+## Branch Naming
+branch_naming:
+  feature: feature/*
+  bugfix: fix/*
+  hotfix: hotfix/*
+  release: release/*
+  refactor: refactor/*
+
+## Pull Requests
+pull_requests:
+  template: true
+  required_checks:
+    - build
+    - tests
+    - linting
+    - code_coverage
+  review_requirements:
+    - at least one approval
+    - no blocking comments
+    - passing CI/CD
+
+## Git Hooks
+hooks:
+  pre_commit:
+    - format_check
+    - lint_check
+    - test_check
+  pre_push:
+    - full_test_suite
+    - sanitizer_checks
+
+## Repository Structure
+structure:
+  main_branch: main
+  development_branch: develop
+  release_tags: semantic_versioning
+  changelog: CHANGELOG.md 

@@ -5,7 +5,6 @@ genetic_algorithm_lib = library('genetic_algorithm',
         'src/genetic_algorithm.cc',
         'src/chromosome.cc',
         'src/individual.cc',
-        'src/population.cc',
         'src/selection.cc',
         'src/mutation.cc',
         'src/crossover.cc'
@@ -39,10 +38,10 @@ if get_option('build_tests')
             'test/genetic_algorithm_test.cc',
             'test/chromosome_test.cc',
             'test/individual_test.cc',
-            'test/population_test.cc',
             'test/selection_test.cc',
             'test/mutation_test.cc',
-            'test/crossover_test.cc'
+            'test/crossover_test.cc',
+            'test/statistics_test.cc'
         ],
         dependencies : [
             genetic_algorithm_dep,

@@ -1,0 +1,248 @@
+---
+description: "Documentation rules for code comments, Doxygen, README files, and other project documentation"
+globs: ["**/*.cc", "**/*.h", "**/*.md", "**/README*"]
+alwaysApply: false
+---
+
+# Documentation Rules
+
+## General Guidelines
+general:
+  language: english
+  style: clear_and_concise
+  tone: technical_professional
+  requirements:
+    - complete_sentences
+    - proper_grammar
+    - consistent_terminology
+    - spell_checking
+  formatting:
+    line_length: 80
+    trim_trailing_whitespace: true
+    ensure_newline_at_eof: true
+
+## Doxygen Configuration
+doxygen:
+  style: javadoc
+  scope:
+    public_api: required
+    protected: recommended
+    private: optional
+  features:
+    generate_html: true
+    generate_xml: true
+    generate_latex: false
+    use_markdown: true
+    extract_all: true
+    extract_private: false
+    extract_static: true
+    
+  documentation:
+    files:
+      header: true
+      source: false
+      test: false
+    elements:
+      classes: true
+      structs: true
+      functions: true
+      enums: true
+      namespaces: true
+      variables: true
+      
+  commands:
+    required:
+      - @brief
+      - @param
+      - @return
+      - @throws
+    recommended:
+      - @see
+      - @note
+      - @warning
+      - @deprecated
+    optional:
+      - @todo
+      - @bug
+      - @test
+      
+  templates:
+    file_header: |
+      /**
+       * @file {filename}
+       * @brief {brief description}
+       * @author {author}
+       * @date {date}
+       */
+       
+    class: |
+      /**
+       * @brief {brief description}
+       * @details {detailed description}
+       */
+       
+    function: |
+      /**
+       * @brief {brief description}
+       * @param {param} Description of parameter
+       * @return Description of return value
+       * @throws {exception} Description of exception
+       */
+       
+    enum: |
+      /**
+       * @brief {brief description}
+       * @details {detailed description}
+       */
+
+## Markdown Documentation
+markdown:
+  file_types:
+    readme: README.md
+    changelog: CHANGELOG.md
+    contributing: CONTRIBUTING.md
+    code_of_conduct: CODE_OF_CONDUCT.md
+    architecture: docs/ARCHITECTURE.md
+    api: docs/API.md
+    
+  structure:
+    readme:
+      sections:
+        - project_title
+        - badges
+        - description
+        - features
+        - installation
+        - quick_start
+        - usage
+        - configuration
+        - api_reference
+        - contributing
+        - license
+        
+    architecture:
+      sections:
+        - overview
+        - system_components
+        - data_flow
+        - algorithms
+        - performance
+        - security
+        
+    api:
+      sections:
+        - overview
+        - authentication
+        - endpoints
+        - data_models
+        - error_handling
+        
+  formatting:
+    headers:
+      style: atx  # Use # style headers
+      max_level: 4
+      spacing: single_blank_line
+    
+    lists:
+      style: hyphen
+      indent: 2
+      nested_indent: 2
+      
+    code:
+      syntax_highlighting: true
+      language_specified: true
+      fenced_style: backticks
+      
+    links:
+      style: reference
+      check_validity: true
+      
+    images:
+      alt_text: required
+      max_width: 800px
+      
+## Neural Network Documentation
+neural_network:
+  architecture:
+    required:
+      - network_topology
+      - layer_descriptions
+      - activation_functions
+      - weight_initialization
+    diagrams:
+      - network_structure
+      - data_flow
+      - training_process
+      
+  algorithms:
+    required:
+      - forward_propagation
+      - genetic_operations
+      - fitness_calculation
+    pseudocode: true
+    complexity_analysis: true
+    
+  parameters:
+    document:
+      - population_size
+      - mutation_rate
+      - crossover_rate
+      - network_dimensions
+    include:
+      - default_values
+      - valid_ranges
+      - impact_description
+
+## Version Control Integration
+version_control:
+  commit_messages:
+    documentation:
+      prefix: "docs:"
+      format: "docs: {scope} - {description}"
+  
+  branch_naming:
+    documentation:
+      format: "docs/{feature}"
+      
+  pull_requests:
+    documentation:
+      required_sections:
+        - changes_description
+        - documentation_updates
+        - related_issues
+
+## Documentation Generation
+generation:
+  automation:
+    doxygen:
+      trigger: pre_commit
+      output_dir: docs/api
+      check_warnings: true
+      
+    markdown:
+      link_checker: true
+      style_checker: true
+      spell_checker: true
+      
+  continuous_integration:
+    build_docs: true
+    publish_docs: true
+    check_links: true
+    validate_examples: true
+
+## Documentation Testing
+testing:
+  coverage:
+    public_api: 100%
+    protected: 80%
+    examples: 100%
+    
+  validation:
+    links: true
+    code_samples: true
+    api_consistency: true
+    
+  review:
+    technical_accuracy: required
+    grammar_style: required
+    completeness: required 

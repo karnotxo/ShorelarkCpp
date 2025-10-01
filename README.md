@@ -2,13 +2,13 @@
 
 A modern C++17 port of the fascinating [Shorelark](https://github.com/patryk27/shorelark) project - a bird evolution simulator that demonstrates genetic algorithms and neural networks in action.
 
-[![Build & Test](https://github.com/karnotxo/cshorelark/actions/workflows/build.yml/badge.svg)](https://github.com/karnotxo/cshorelark/actions/workflows/build.yml)
-[![Code Quality](https://github.com/karnotxo/cshorelark/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karnotxo/cshorelark/actions/workflows/code-quality.yml)
-[![Documentation](https://github.com/karnotxo/cshorelark/actions/workflows/documentation.yml/badge.svg)](https://github.com/karnotxo/cshorelark/actions/workflows/documentation.yml)
-[![Security](https://github.com/karnotxo/cshorelark/actions/workflows/security.yml/badge.svg)](https://github.com/karnotxo/cshorelark/actions/workflows/security.yml)
-[![codecov](https://codecov.io/gh/karnotxo/cshorelark/branch/main/graph/badge.svg)](https://codecov.io/gh/karnotxo/cshorelark)
-[![Documentation Status](https://img.shields.io/github/deployments/karnotxo/cshorelark/github-pages?label=docs)](https://karnotxo.github.io/cshorelark/)
-[![License](https://img.shields.io/github/license/karnotxo/cshorelark)](LICENSE)
+[![Build & Test](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/build.yml/badge.svg)](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/build.yml)
+[![Code Quality](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/code-quality.yml/badge.svg)](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/code-quality.yml)
+[![Documentation](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/documentation.yml/badge.svg)](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/documentation.yml)
+[![Security](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/security.yml/badge.svg)](https://github.com/karnotxo/ShorelarkCpp/actions/workflows/security.yml)
+[![codecov](https://codecov.io/gh/karnotxo/ShorelarkCpp/branch/main/graph/badge.svg)](https://codecov.io/gh/karnotxo/ShorelarkCpp)
+[![Documentation Status](https://img.shields.io/github/deployments/karnotxo/ShorelarkCpp/github-pages?label=docs)](https://karnotxo.github.io/ShorelarkCpp/)
+[![License](https://img.shields.io/github/license/karnotxo/ShorelarkCpp)](LICENSE)
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B17)
 [![Conan](https://img.shields.io/badge/package%20manager-conan-pink.svg)](https://conan.io/)
 [![CMake](https://img.shields.io/badge/CMake-3.20%2B-green.svg)](https://cmake.org/)
@@ -182,11 +182,11 @@ meson setup builddir --pkg-config-path=build -Doptimization=3
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cshorelark.git
-cd cshorelark
+git clone https://github.com/karnotxo/ShorelarkCpp.git
+cd ShorelarkCpp
 
 # Install dependencies with Conan
-conan install . --output-folder=build --build=missing
+conan install . --output-folder=. --build=missing  -s build_type=Release
 
 # Configure and build
 cmake --preset conan-release
@@ -200,11 +200,11 @@ cmake --build --preset conan-release
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cshorelark.git
-cd cshorelark
+git clone https://github.com/karnotxo/ShorelarkCpp.git
+cd ShorelarkCpp
 
 # Install dependencies with Conan
-conan install . --output-folder=build --build=missing
+conan install . --output-folder=. --build=missing
 
 # Configure and build
 meson setup builddir --pkg-config-path=build
@@ -217,7 +217,7 @@ meson compile -C builddir
 ## Project Structure
 
 ```
-cshorelark/
+ShorelarkCpp/
 ├── apps/
 │   ├── simulation-ui/    # GUI application
 │   └── optimizer-cli/    # Command-line optimizer

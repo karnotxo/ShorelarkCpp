@@ -1,0 +1,576 @@
+---
+description: "User interface rules for visualization, rendering, and user interaction components"
+globs: ["**/ui/*.cc", "**/ui/*.h", "**/graphics/*.cc", "**/graphics/*.h", "**/visualization/*.cc", "**/visualization/*.h"]
+alwaysApply: false
+---
+# UI Implementation Rules with Dear ImGui
+
+## Theme System
+themes:
+  default: dark_modern
+  available:
+    dark_modern:
+      accent: [0.2, 0.7, 0.9, 1.0]
+      background: [0.06, 0.06, 0.06, 0.94]
+      surface: [0.10, 0.10, 0.10, 1.00]
+      text: [0.90, 0.90, 0.90, 1.00]
+      text_secondary: [0.70, 0.70, 0.70, 1.00]
+    light_modern:
+      accent: [0.0, 0.5, 0.9, 1.0]
+      background: [0.98, 0.98, 0.98, 0.94]
+      surface: [0.95, 0.95, 0.95, 1.00]
+      text: [0.10, 0.10, 0.10, 1.00]
+      text_secondary: [0.30, 0.30, 0.30, 1.00]
+    cyberpunk:
+      accent: [1.0, 0.2, 0.6, 1.0]
+      background: [0.05, 0.05, 0.10, 0.94]
+      surface: [0.08, 0.08, 0.15, 1.00]
+      text: [0.0, 1.0, 1.0, 1.00]
+      text_secondary: [1.0, 0.2, 0.6, 1.00]
+  customization:
+    save_custom_themes: true
+    export_format: json
+    live_preview: true
+
+## Visual Style
+style:
+  global:
+    rounding: 4.0
+    border_size: 1.0
+    window_padding: [8.0, 8.0]
+    frame_padding: [4.0, 3.0]
+    alpha: 0.95
+    animation:
+      enabled: true
+      duration: 0.15
+      easing: ease_out_cubic
+  
+  elements:
+    window:
+      shadow:
+        enabled: true
+        size: 15.0
+        color: [0.0, 0.0, 0.0, 0.35]
+      blur:
+        enabled: true
+        strength: 5.0
+    
+    buttons:
+      gradient: true
+      hover_animation: true
+      pressed_feedback: true
+      
+    sliders:
+      grab_radius: 4.0
+      smooth_scrolling: true
+      value_display: floating
+    
+    plots:
+      anti_aliasing: true
+      smooth_lines: true
+      gradient_fill: true
+      hover_tooltip: true
+
+## Typography
+typography:
+  fonts:
+    default:
+      family: "Inter"
+      size: 13
+      weight: regular
+      file: "fonts/Inter-Regular.ttf"
+      fallbacks:
+        - "Noto Sans"
+        - "Noto Sans CJK"
+    heading:
+      family: "Inter"
+      size: 16
+      weight: medium
+      file: "fonts/Inter-Medium.ttf"
+      fallbacks:
+        - "Noto Sans"
+        - "Noto Sans CJK"
+    monospace:
+      family: "JetBrains Mono"
+      size: 13
+      weight: regular
+      file: "fonts/JetBrainsMono-Regular.ttf"
+    cjk:
+      family: "Noto Sans CJK"
+      size: 13
+      weight: regular
+      files:
+        jp: "fonts/NotoSansCJKjp-Regular.otf"
+        kr: "fonts/NotoSansCJKkr-Regular.otf"
+        sc: "fonts/NotoSansCJKsc-Regular.otf"
+        tc: "fonts/NotoSansCJKtc-Regular.otf"
+  scale:
+    h1: 24
+    h2: 20
+    h3: 16
+    body: 13
+    small: 11
+  features:
+    anti_aliasing: true
+    subpixel_rendering: true
+    ligatures: true
+    variable_fonts: true
+    opentype_features:
+      - kern      # Kerning
+      - liga      # Standard Ligatures
+      - dlig      # Discretionary Ligatures
+      - hlig      # Historical Ligatures
+      - calt      # Contextual Alternates
+    unicode_ranges:
+      - latin
+      - latin-ext
+      - cyrillic
+      - greek
+      - cjk
+      - emoji
+
+## Layout
+layout:
+  grid:
+    enabled: true
+    size: 8.0
+    snap_to_grid: true
+  spacing:
+    item: 8.0
+    section: 16.0
+    panel: 24.0
+  alignment:
+    text: left
+    buttons: center
+    sliders: stretch
+  responsiveness:
+    enabled: true
+    breakpoints:
+      small: 800
+      medium: 1200
+      large: 1600
+  text_flow:
+    direction: auto
+    vertical_text: supported
+    mixed_direction: true
+    alignment:
+      rtl: right
+      ltr: left
+      mixed: auto
+
+## Effects
+effects:
+  transitions:
+    enabled: true
+    types:
+      fade:
+        duration: 0.2
+        easing: ease_in_out
+      slide:
+        duration: 0.3
+        easing: ease_out_cubic
+  hover:
+    highlight: true
+    scale: 1.02
+    duration: 0.1
+  focus:
+    outline: true
+    glow: true
+    color: theme_accent
+
+## Window Management
+windows:
+  main_window:
+    title: "CShorelark Neural Evolution"
+    flags:
+      - ImGuiWindowFlags_MenuBar
+      - ImGuiWindowFlags_NoCollapse
+    layout:
+      - simulation_view
+      - control_panel
+      - statistics_panel
+  panels:
+    docking:
+      enabled: true
+      save_layout: true
+      transparent_windows: true
+    style: modern_borderless
+    tab_bar:
+      style: modern
+      reorderable: true
+      preview: true
+
+## Simulation View
+simulation_view:
+  rendering:
+    backend: opengl3
+    vsync: true
+    frame_rate: 60
+    features:
+      - hardware_acceleration
+      - multi_viewport
+      - high_dpi_aware
+    optimization:
+      - frustum_culling
+      - occlusion_culling
+      - level_of_detail
+    buffers:
+      vertex_buffer: dynamic
+      index_buffer: dynamic
+      uniform_buffer: persistent
+    draw_calls:
+      batching: true
+      instancing: true
+      indirect_drawing: true
+  viewport:
+    resizable: true
+    aspect_ratio: maintain
+    zoom:
+      enabled: true
+      range: [0.1, 10.0]
+      smooth_zoom: true
+    anti_aliasing:
+      msaa: 4
+      fxaa: true
+  controls:
+    - pan
+    - zoom
+    - reset_view
+
+## Neural Network Visualization
+neural_network_view:
+  layout: hierarchical
+  renderer:
+    type: vector_graphics
+    quality: high
+    anti_aliasing: true
+  elements:
+    neurons:
+      shape:
+        type: svg
+        file: "assets/neuron.svg"
+        scaling: smooth
+      color_scheme:
+        active: [0.2, 0.7, 0.9, 1.0]
+        inactive: [0.5, 0.5, 0.5, 1.0]
+      effects:
+        glow:
+          enabled: true
+          intensity: 0.5
+          color: accent
+    connections:
+      type: bezier_curve
+      thickness: weight_based
+      color_scheme:
+        positive: [0.0, 1.0, 0.0, 0.7]
+        negative: [1.0, 0.0, 0.0, 0.7]
+      animation:
+        enabled: true
+        signal_flow: true
+        duration: 1.0
+
+## Evolution Controls
+evolution_controls:
+  parameters:
+    population_size:
+      type: slider_int
+      range: [10, 1000]
+      default: 50
+    mutation_rate:
+      type: slider_float
+      range: [0.0, 1.0]
+      default: 0.01
+    generation_speed:
+      type: slider_float
+      range: [0.1, 10.0]
+      default: 1.0
+  buttons:
+    - start_evolution
+    - pause_evolution
+    - step_generation
+    - reset_simulation
+
+## Statistics Display
+statistics:
+  plots:
+    fitness:
+      type: line_plot
+      history: 100
+      metrics:
+        - best_fitness
+        - average_fitness
+        - worst_fitness
+    population:
+      type: histogram
+      update_freq: 1.0
+      bins: 20
+  metrics_panel:
+    refresh_rate: 0.5
+    display:
+      - generation_count
+      - elapsed_time
+      - fps_counter
+      - active_individuals
+
+## Debug Tools
+debug:
+  tools:
+    network_inspector:
+      enabled: true
+      features:
+        - weight_matrix_view
+        - activation_heatmap
+        - gradient_visualization
+    performance_overlay:
+      enabled: true
+      metrics:
+        - frame_time
+        - draw_calls
+        - memory_usage
+    logging:
+      level: debug
+      console: true
+
+## Interaction Patterns
+interaction:
+  tooltips:
+    enabled: true
+    delay: 0.5
+  context_menus:
+    enabled: true
+    features:
+      - save_network
+      - load_network
+      - export_statistics
+  keyboard_shortcuts:
+    space: toggle_simulation
+    r: reset_view
+    s: save_state
+    l: load_state
+
+## Performance
+performance:
+  optimizations:
+    - minimize_draw_calls
+    - batch_similar_widgets
+    - clip_invisible_content
+  update_limits:
+    plot_refresh: 16.6ms  # 60Hz
+    stats_refresh: 100ms
+    heavy_computation: async 
+
+## Modern UI Components
+components:
+  cards:
+    style: floating
+    shadow: true
+    hover_effect: true
+    corner_radius: 8.0
+  
+  tooltips:
+    style: floating
+    animation: fade
+    delay: 0.3
+    max_width: 300
+  
+  notifications:
+    position: bottom_right
+    stack: true
+    max_visible: 3
+    timeout: 3.0
+    animation: slide_up
+  
+  progress:
+    style: modern
+    animation: true
+    gradient: true
+    
+  search:
+    style: modern
+    live_results: true
+    highlight_matches: true
+    fuzzy_matching: true
+
+  language_selector:
+    style: modern_dropdown
+    show_native_names: true
+    show_flags: true
+    search: true
+    recently_used: true
+    
+  locale_aware:
+    date_picker:
+      format: locale
+      calendar: locale
+    number_input:
+      decimals: locale
+      grouping: locale
+    currency:
+      symbol: locale
+      position: locale
+
+## Accessibility
+accessibility:
+  high_contrast:
+    available: true
+    increase_contrast: 1.2
+  screen_readers:
+    aria_labels: true
+    descriptions: true
+  keyboard_navigation:
+    enabled: true
+    visible_focus: true
+  color_blindness:
+    modes:
+      - deuteranopia
+      - protanopia
+      - tritanopia
+    simulation: true
+
+## Internationalization
+i18n:
+  default_locale: en
+  fallback_locale: en
+  supported_locales:
+    - en    # English
+    - es    # Spanish
+    - fr    # French
+    - de    # German
+    - ja    # Japanese
+    - zh    # Chinese (Simplified)
+    - ko    # Korean
+    - ru    # Russian
+  
+  features:
+    rtl_support: true
+    locale_switching: true
+    number_formatting: true
+    date_time_formatting: true
+    
+  text_direction:
+    auto_detect: true
+    rtl_languages: [ar, he, fa]
+    mixed_content_support: true
+    
+  formatting:
+    numbers:
+      decimal_separator: locale
+      thousand_separator: locale
+      scientific_notation: locale
+    dates:
+      format: locale
+      calendar: locale
+      
+  resources:
+    storage:
+      format: json
+      structure: hierarchical
+      fallback: key_based
+    loading:
+      dynamic: true
+      lazy: true
+      cache: true
+      
+  pluralization:
+    rules: true
+    count_forms: true
+    gender_forms: true
+    
+  string_interpolation:
+    syntax: "{variable}"
+    nested_keys: true
+    formatting: true
+
+## Graphics
+graphics:
+  vector:
+    enabled: true
+    format: svg
+    features:
+      - path_morphing
+      - gradients
+      - patterns
+      - filters
+      - masks
+      - clipping_paths
+    optimization:
+      - path_simplification
+      - batch_rendering
+      - geometry_instancing
+    scaling:
+      method: smooth
+      preserve_crisp_edges: true
+      pixel_snapping: true
+    assets:
+      icons:
+        format: svg
+        sizes: [16, 24, 32, 48]
+        themes:
+          - light
+          - dark
+      illustrations:
+        format: svg
+        responsive: true
+        lazy_loading: true
+
+## Rendering
+rendering:
+  backend: modern_opengl
+  version: 4.5
+  features:
+    compute_shaders: true
+    tessellation: true
+    geometry_shaders: true
+    instancing: true
+    indirect_drawing: true
+    
+  optimization:
+    batching:
+      enabled: true
+      dynamic_batching: true
+      instance_batching: true
+      batch_size_limit: 10000
+    
+    buffers:
+      type: persistent_mapped
+      double_buffering: true
+      triple_buffering: vsync_enabled
+      uniform_buffer_objects: true
+      shader_storage_buffers: true
+      
+    memory:
+      texture_compression: true
+      mipmap_generation: true
+      texture_arrays: true
+      buffer_storage: true
+      
+    pipeline:
+      state_caching: true
+      multi_draw_indirect: true
+      bindless_textures: true
+      descriptor_sets: true
+      
+    sync:
+      fence_sync: true
+      async_texture_upload: true
+      async_buffer_upload: true
+      
+  shaders:
+    compilation:
+      runtime_compilation: debug_only
+      shader_caching: true
+      optimization_level: performance
+    
+    programs:
+      ui_basic:
+        vertex: "shaders/ui_basic.vert"
+        fragment: "shaders/ui_basic.frag"
+      ui_effects:
+        vertex: "shaders/ui_effects.vert"
+        fragment: "shaders/ui_effects.frag"
+        geometry: "shaders/ui_effects.geom"
+      vector_graphics:
+        vertex: "shaders/vector.vert"
+        fragment: "shaders/vector.frag"
+        geometry: "shaders/vector.geom"
+        compute: "shaders/vector_tesselation.comp" 
